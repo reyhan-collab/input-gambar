@@ -12,10 +12,31 @@
     }
     .gallery-img {
       transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
     }
     .gallery-img:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px rgba(0, 255, 217, 0.5);
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      display: none;
+    }
+    .modal img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 30px #00ffd9;
+    }
+    .modal.active {
+      display: flex;
     }
   </style>
 </head>
@@ -44,6 +65,11 @@
     </div>
   </section>
 
+  <!-- Modal Zoom -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <img id="modalImage" src="" alt="Zoomed Image" />
+  </div>
+
   <!-- Footer -->
   <footer class="text-center py-6 text-gray-500 text-sm">
     &copy; 2025 Galeri Karya - Dibuat oleh Kamu ✨
@@ -53,6 +79,8 @@
     const imageForm = document.getElementById('imageForm');
     const imageInput = document.getElementById('imageInput');
     const gallery = document.getElementById('gallery');
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
 
     imageForm.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -63,12 +91,20 @@
           const img = document.createElement('img');
           img.src = event.target.result;
           img.className = "gallery-img w-full h-60 object-cover rounded-lg";
+          img.onclick = function () {
+            modalImage.src = img.src;
+            modal.classList.add('active');
+          };
           gallery.prepend(img);
         };
         reader.readAsDataURL(file);
         imageInput.value = "";
       }
     });
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
   </script>
 
 </body>
