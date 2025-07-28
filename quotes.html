@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri Karya</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .neon {
+      color: #00ffd9;
+      text-shadow: 0 0 5px #00ffd9, 0 0 10px #00ffd9, 0 0 20px #00ffd9;
+    }
+    .gallery-img {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .gallery-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0, 255, 217, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen">
+
+  <!-- Header -->
+  <header class="py-6">
+    <h1 class="text-center text-4xl font-bold neon">📸 Galeri Karya Kamu</h1>
+    <p class="text-center text-gray-400 mt-2">Upload dan tampilkan karya visualmu di sini</p>
+  </header>
+
+  <!-- Form Upload -->
+  <section class="py-6 px-4 max-w-3xl mx-auto">
+    <form id="imageForm" class="bg-gray-800 p-6 rounded-lg shadow-md">
+      <label class="block text-teal-300 font-semibold mb-2">Pilih Gambar:</label>
+      <input type="file" id="imageInput" accept="image/*" class="mb-4 text-white" required />
+      <button type="submit" class="bg-teal-500 px-4 py-2 rounded hover:bg-teal-600 transition">Unggah Gambar</button>
+    </form>
+  </section>
+
+  <!-- Galeri -->
+  <section class="py-6 px-4 max-w-6xl mx-auto">
+    <h2 class="text-2xl text-teal-300 font-bold mb-4">🖼 Kumpulan Gambar</h2>
+    <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- Gambar akan muncul di sini -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-gray-500 text-sm">
+    &copy; 2025 Galeri Karya - Dibuat oleh Kamu ✨
+  </footer>
+
+  <script>
+    const imageForm = document.getElementById('imageForm');
+    const imageInput = document.getElementById('imageInput');
+    const gallery = document.getElementById('gallery');
+
+    imageForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const file = imageInput.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = document.createElement('img');
+          img.src = event.target.result;
+          img.className = "gallery-img w-full h-60 object-cover rounded-lg";
+          gallery.prepend(img);
+        };
+        reader.readAsDataURL(file);
+        imageInput.value = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
